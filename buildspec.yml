@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region cn-northwest-1)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t runoob/ubuntu:v1 . 
+      - docker tag runoob/ubuntu:v1 427921151793.dkr.ecr.cn-northwest-1.amazonaws.com/cce-images:ubuntu1   
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 427921151793.dkr.ecr.cn-northwest-1.amazonaws.com.cn/cce-images:ubuntu1
